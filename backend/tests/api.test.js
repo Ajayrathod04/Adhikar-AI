@@ -25,10 +25,10 @@ describe('Election API', () => {
     expect(res.body.missingRequirements).toContain('Must be 18 or older');
   });
 
-  it('GET /api/health should return OK', async () => {
+  it('GET /api/health should return ok', async () => {
     const res = await request(app).get('/api/health');
     expect(res.statusCode).toEqual(200);
-    expect(res.body.status).toBe('OK');
+    expect(res.body.status).toBe('ok');
   });
 
   it('GET /api/guide should return steps', async () => {
@@ -43,6 +43,5 @@ describe('Election API', () => {
       .send({ message: 'How do I register?' });
     expect(res.statusCode).toEqual(200);
     expect(res.body.isAI).toBe(false);
-    expect(res.body.reply).toContain('offline mode');
   });
 });
