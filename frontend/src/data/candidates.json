@@ -1,0 +1,34 @@
+{
+  "candidates": [
+    {
+      "id": 1,
+      "name": "Arjun Sharma",
+      "party": "People's First Party",
+      "location": "Mumbai",
+      "workDone": "Renovated 5 local schools, improved water sanitation in Ward 4.",
+      "criminalRecord": "No",
+      "tenure": "8 Years",
+      "rating": 4.5
+    },
+    {
+      "id": 2,
+      "name": "Priya Deshmukh",
+      "party": "Progressive Alliance",
+      "location": "Delhi",
+      "workDone": "Initiated city-wide solar light project, 12 community clinics.",
+      "criminalRecord": "No",
+      "tenure": "5 Years",
+      "rating": 4.2
+    },
+    {
+      "id": 3,
+      "name": "Vikram Singh",
+      "party": "National Welfare Front",
+      "location": "Mumbai",
+      "workDone": "Public infrastructure development, youth sports coaching center.",
+      "criminalRecord": "Yes (Resolved)",
+      "tenure": "12 Years",
+      "rating": 3.8
+    }
+  ]
+}

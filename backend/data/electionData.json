@@ -1,0 +1,57 @@
+{
+  "elections": [
+    {
+      "id": "gen-2024",
+      "name": "General Elections 2024",
+      "type": "National",
+      "dates": {
+        "registration_deadline": "2024-04-15",
+        "voting_day": "2024-05-07",
+        "results_day": "2024-06-04"
+      },
+      "locations": ["All States"]
+    },
+    {
+      "id": "state-mah-2024",
+      "name": "Maharashtra Assembly Elections",
+      "type": "State",
+      "dates": {
+        "registration_deadline": "2024-10-20",
+        "voting_day": "2024-11-20",
+        "results_day": "2024-11-23"
+      },
+      "locations": ["Maharashtra"]
+    },
+    {
+      "id": "state-del-2025",
+      "name": "Delhi Assembly Elections",
+      "type": "State",
+      "dates": {
+        "registration_deadline": "2025-01-15",
+        "voting_day": "2025-02-08",
+        "results_day": "2025-02-11"
+      },
+      "locations": ["Delhi"]
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Registration",
+      "content": "Ensure your name is in the Voter List. Fill Form 6 if you are a new voter.",
+      "docs": ["Aadhar Card", "Proof of Residence", "Age Proof"]
+    },
+    {
+      "id": "step-2",
+      "title": "Verify Details",
+      "content": "Check your polling station details on the ECI website or Voter Helpline App.",
+      "docs": ["Voter ID (EPIC)"]
+    },
+    {
+      "id": "step-3",
+      "title": "On Voting Day",
+      "content": "Go to your assigned polling booth, show your identity proof, and cast your vote on the EVM.",
+      "docs": ["Voter ID Card", "Any Govt ID"]
+    }
+  ]
+}
