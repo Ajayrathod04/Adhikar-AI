@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -32,6 +33,14 @@ app.get('/api/guide', electionController.getVotingGuide);
 app.post('/api/ai/chat', aiController.chatWithAI);
 app.use('/api/health', healthRoutes);
 app.use('/api/insight', insightRoutes);
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// SPA Handle: Route all non-api requests to index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Global Error Safety Layer
 app.use((err, req, res, next) => {
