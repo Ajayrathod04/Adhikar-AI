@@ -19,36 +19,43 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 hover:bg-white/10 transition-all group/lang">
-              <Globe size={16} className="text-primary group-hover/lang:scale-110 transition-transform" />
-              <select 
-                value={locale} 
-                onChange={(e) => setLocale(e.target.value)}
-                className="bg-transparent border-none outline-none text-xs font-bold text-zinc-400 cursor-pointer uppercase appearance-none pr-1"
-              >
-                {languages.map(lang => (
-                  <option key={lang.code} value={lang.code} className="bg-[#0f0a1a] text-white">
-                    {lang.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown size={12} className="text-zinc-600" />
+            {/* ENHANCED LANGUAGE SWITCHER */}
+            <div className="relative group/lang">
+              <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-2xl px-4 py-2 hover:bg-primary/20 transition-all cursor-pointer shadow-[0_0_15px_rgba(139,92,246,0.1)]">
+                <Globe size={18} className="text-primary animate-pulse" />
+                <select 
+                  value={locale} 
+                  onChange={(e) => setLocale(e.target.value)}
+                  className="bg-transparent border-none outline-none text-xs font-black text-white cursor-pointer uppercase pr-2 z-10"
+                  style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
+                >
+                  {languages.map(lang => (
+                    <option key={lang.code} value={lang.code} className="bg-[#0f0a1a] text-white py-2">
+                      {lang.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown size={14} className="text-primary/50" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-ping" />
             </div>
-            <div className="h-6 w-[1px] bg-white/10" />
+
+            <div className="h-8 w-[1px] bg-white/10" />
+            
             <button className="p-2 text-zinc-400 hover:text-white transition-colors relative">
               <Bell size={20} />
               <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-background" />
             </button>
-            <div className="h-8 w-[1px] bg-white/5" />
-            <div className="flex items-center gap-3 cursor-pointer group">
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center p-1 border border-white/10 group-hover:border-primary/50 transition-colors">
-                <User size={18} className="text-zinc-400" />
+
+            <div className="flex items-center gap-3 cursor-pointer group pl-2">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center p-1 border border-white/10 group-hover:border-primary/50 transition-all shadow-xl">
+                <User size={20} className="text-primary" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold">Guest User</span>
-                <span className="text-[10px] text-zinc-500">Citizen</span>
+              <div className="hidden md:flex flex-col text-left">
+                <span className="text-sm font-bold text-white group-hover:text-primary transition-colors">Guest User</span>
+                <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-tighter">Citizen • Verified</span>
               </div>
-              <ChevronDown size={14} className="text-zinc-500" />
+              <ChevronDown size={14} className="text-zinc-500 group-hover:rotate-180 transition-transform" />
             </div>
           </div>
         </header>

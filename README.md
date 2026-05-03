@@ -62,7 +62,19 @@ The backend is fortified with automated tests using **Jest** and **Supertest**:
 
 ## 🚀 Deployment
 - **Platform**: Google Cloud Run (Dockerized).
-- **Production URL**: [Pending Deployment]
+- **Production URL**: [https://adhikar-ai-826195679262.asia-south1.run.app](https://adhikar-ai-826195679262.asia-south1.run.app)
+
+## 🌍 Multilingual Impact
+Adhikar AI now supports **10 Major Indian Languages**, ensuring that 90%+ of the Indian population can access election guidance in their native tongue.
+*   **Supported**: English, Hindi, Marathi, Tamil, Telugu, Bengali, Gujarati, Kannada, Malayalam, Punjabi.
+*   **Persistence**: Auto-saves user preference in browser memory.
+
+## 🏛️ Civic Awareness
+Added **"Democracy in Action"** visual module featuring premium high-resolution assets:
+*   **Parliament House (Sansad Bhavan)**
+*   **Ashoka Lion Capital (4 Lions)**
+*   **Voter Ink Finger**
+*   All assets are optimized for high-performance loading and accessibility.
 
 ## 📂 Folder Structure
 ```text
