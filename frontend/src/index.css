@@ -69,6 +69,19 @@ body {
   --color-india-green: #138808;
 
   --background-image-gradient-neon: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
-  --background-image-gradient-tricolour: linear-gradient(135deg, #FF9933 0%, #ffffff 50%, #138808 100%);
+  --background-image-gradient-tricolour: linear-gradient(90deg, #FF9933 0%, #ffffff 50%, #138808 100%);
   --background-image-gradient-saffron: linear-gradient(135deg, #FF9933 0%, rgba(255, 153, 51, 0.1) 100%);
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.bg-gradient-tricolour {
+  background-image: var(--background-image-gradient-tricolour);
 }

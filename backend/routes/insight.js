@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const { log } = require('../services/cloudLogger');
+const { formatResponse } = require('../utils/responseFormatter');
 
-// Simulated insight logger
+/**
+ * POST /api/insight/log
+ * Simulated insight logger for user interaction tracking
+ */
 router.post('/log', (req, res) => {
   const { event, details } = req.body;
-  console.log(`[Insight Log] ${new Date().toISOString()} - ${event}:`, details);
+  log('INFO', `Insight event: ${event || 'USER_ACTION'}`, { details });
   
-  // Always succeed even if optional processing fails
-  res.json({ 
-    status: 'success', 
-    message: 'Insight captured',
-    timestamp: new Date().toISOString()
-  });
+  res.json(formatResponse({ status: 'captured' }, true, "Insight logged to Cloud stack"));
 });
 
 module.exports = router;

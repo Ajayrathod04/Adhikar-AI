@@ -9,8 +9,9 @@ import gu from './gu.json';
 import kn from './kn.json';
 import ml from './ml.json';
 import pa from './pa.json';
+import ur from './ur.json';
 
-const translations = { en, hi, mr, ta, te, bn, gu, kn, ml, pa };
+const translations = { en, hi, mr, ta, te, bn, gu, kn, ml, pa, ur };
 
 const I18nContext = createContext();
 
@@ -22,7 +23,8 @@ export const I18nProvider = ({ children }) => {
   }, [locale]);
 
   const t = (key) => {
-    return translations[locale][key] || translations['en'][key] || key;
+    const currentTranslation = translations[locale] || translations['en'];
+    return currentTranslation[key] || translations['en'][key] || key;
   };
 
   return (
@@ -44,5 +46,6 @@ export const languages = [
   { code: 'gu', name: 'ગુજરાતી' },
   { code: 'kn', name: 'ಕನ್ನಡ' },
   { code: 'ml', name: 'മലയാളം' },
-  { code: 'pa', name: 'ਪੰਜਾਬੀ' }
+  { code: 'pa', name: 'ਪੰਜਾਬੀ' },
+  { code: 'ur', name: 'اردو' }
 ];

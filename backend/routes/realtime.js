@@ -6,12 +6,15 @@ let cache = null;
 let lastFetch = 0;
 const CACHE_DURATION = 30 * 1000;
 
-router.get('/realtime', (req, res) => {
+/**
+ * GET /api/realtime
+ * Provides real-time voter turnout and participation statistics
+ */
+router.get('/', (req, res) => {
   try {
     const now = Date.now();
     if (cache && (now - lastFetch < CACHE_DURATION)) {
-      logInfo('Returning cached realtime data');
-      return res.status(200).json(formatResponse(cache, true));
+      return res.json(formatResponse(cache, true));
     }
 
     const simulatedData = {
@@ -22,23 +25,17 @@ router.get('/realtime', (req, res) => {
         south: "72%",
         east: "61%",
         west: "70%"
-      }
+      },
+      lastUpdate: new Date().toISOString()
     };
 
     cache = simulatedData;
     lastFetch = now;
-    logInfo('Generated fresh realtime data');
 
-    return res.status(200).json({
-      success: true,
-      data: simulatedData
-    });
+    res.json(formatResponse(simulatedData));
   } catch (err) {
-    logError('Error in realtime route', err);
-    return res.status(200).json({
-      success: true,
-      fallback: true
-    });
+    console.error('[REALTIME] Error:', err.message);
+    res.status(500).json(formatResponse(null, false, err.message));
   }
 });
 

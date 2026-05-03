@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/voter-info', (req, res) => {
+const { formatResponse } = require('../utils/responseFormatter');
+
+router.get('/', (req, res) => {
   try {
     const voterData = {
       pollingBooth: {
@@ -20,17 +22,12 @@ router.get('/voter-info', (req, res) => {
       ]
     };
 
-    return res.status(200).json({
-      success: true,
-      data: voterData
-    });
+    return res.json(formatResponse(voterData));
   } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: true,
-      fallback: true
-    });
+    console.error('[VOTER-ROUTE] Error:', err.message);
+    return res.json(formatResponse({ fallback: true }, true, "Using local voter guide"));
   }
 });
+
 
 module.exports = router;

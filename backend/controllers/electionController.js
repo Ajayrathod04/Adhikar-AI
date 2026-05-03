@@ -1,52 +1,66 @@
 const electionData = require('../data/electionData.json');
+const { validateInput } = require('../utils/validator');
+const { formatResponse } = require('../utils/responseFormatter');
 
 exports.getTimeline = (req, res) => {
-  const { location } = req.query;
-  let filtered = electionData.elections;
-  
-  if (location) {
-    filtered = filtered.filter(e => 
-      e.locations.includes('All States') || 
-      e.locations.some(loc => loc.toLowerCase() === location.toLowerCase())
-    );
+  try {
+    const { location } = req.query;
+    let filtered = electionData.elections || [];
+    
+    if (location) {
+      filtered = filtered.filter(e => 
+        (e.locations && e.locations.includes('All States')) || 
+        (e.locations && e.locations.some(loc => loc.toLowerCase() === location.toLowerCase()))
+      );
+    }
+    
+    res.json(formatResponse(filtered));
+  } catch (error) {
+    console.error('[ELECTION-CONTROLLER] getTimeline error:', error.message);
+    res.json(formatResponse([], true, "Showing default election timeline"));
   }
-  
-  res.json({
-    status: 'success',
-    data: filtered
-  });
 };
 
 exports.checkEligibility = (req, res) => {
-  const { age, citizenship, documents } = req.body;
-  const missing = [];
-  
-  if (!age || age < 18) {
-    missing.push('Must be 18 or older');
-  }
-  
-  if (!citizenship || citizenship.toLowerCase() !== 'indian') {
-    missing.push('Must be an Indian citizen');
-  }
-  
-  const requiredDocs = ['Aadhar Card', 'Address Proof'];
-  const userDocs = documents || [];
-  requiredDocs.forEach(doc => {
-    if (!userDocs.includes(doc)) {
-      missing.push(`Missing document: ${doc}`);
+  try {
+    const schema = { age: 'number', citizenship: 'string' };
+    const input = validateInput(req.body, schema);
+    const { age, citizenship } = input;
+    const documents = req.body.documents || [];
+    const missing = [];
+    
+    if (!age || age < 18) {
+      missing.push('Must be 18 or older');
     }
-  });
+    
+    if (!citizenship || citizenship.toLowerCase() !== 'indian') {
+      missing.push('Must be an Indian citizen');
+    }
+    
+    const requiredDocs = ['Aadhar Card', 'Address Proof'];
+    const userDocs = Array.isArray(documents) ? documents : [];
+    requiredDocs.forEach(doc => {
+      if (!userDocs.includes(doc)) {
+        missing.push(`Missing document: ${doc}`);
+      }
+    });
 
-  res.json({
-    status: 'success',
-    isEligible: missing.length === 0,
-    missingRequirements: missing
-  });
+    res.json(formatResponse({
+      eligible: missing.length === 0,
+      missingRequirements: missing
+    }));
+  } catch (error) {
+    console.error('[ELECTION-CONTROLLER] checkEligibility error:', error.message);
+    res.json(formatResponse({ eligible: false, error: "Validation service unavailable" }, false, "Eligibility check failed"));
+  }
 };
 
 exports.getVotingGuide = (req, res) => {
-  res.json({
-    status: 'success',
-    data: electionData.steps
-  });
+  try {
+    res.json(formatResponse(electionData.steps || []));
+  } catch (error) {
+    console.error('[ELECTION-CONTROLLER] getVotingGuide error:', error.message);
+    res.json(formatResponse([], true, "Guide temporarily unavailable"));
+  }
 };
+

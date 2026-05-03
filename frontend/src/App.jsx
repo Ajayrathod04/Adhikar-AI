@@ -10,13 +10,16 @@ import Landing from './pages/Landing';
 import Candidates from './pages/Candidates';
 import DailyNews from './pages/DailyNews';
 import PollingBooth from './pages/PollingBooth';
+import Home from './pages/Home';
 
 function App() {
   return (
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/welcome" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/eligibility" element={<Eligibility />} />

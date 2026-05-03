@@ -7,7 +7,7 @@ let cache = null;
 let lastFetch = 0;
 const CACHE_DURATION = 60 * 1000;
 
-router.get('/news', (req, res) => {
+router.get('/', (req, res) => {
   try {
     const now = Date.now();
     if (cache && (now - lastFetch < CACHE_DURATION)) {

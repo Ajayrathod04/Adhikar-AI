@@ -1,9 +1,11 @@
-const logInfo = (message) => {
-  console.log(`[INFO] ${new Date().toISOString()}: ${message}`);
+const { log } = require('../services/cloudLogger');
+
+const logInfo = (message, metadata = {}) => {
+  log('INFO', message, metadata);
 };
 
-const logError = (message, error) => {
-  console.error(`[ERROR] ${new Date().toISOString()}: ${message}`, error);
+const logError = (message, error = {}) => {
+  log('ERROR', message, { error: error.message || error, stack: error.stack });
 };
 
 module.exports = { logInfo, logError };

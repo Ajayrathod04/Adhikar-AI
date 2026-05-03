@@ -3,18 +3,31 @@ const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const compression = require('compression');
 const dotenv = require('dotenv');
 const errorHandler = require('./middleware/errorHandler');
 
 dotenv.config();
 
+const requestLogger = require('./middleware/logger');
 const electionController = require('./controllers/electionController');
 const aiController = require('./controllers/aiController');
 const healthRoutes = require('./routes/health');
 const insightRoutes = require('./routes/insight');
 const pollingRoutes = require("./routes/polling");
+const newsRoutes = require("./routes/news");
+const realtimeRoutes = require("./routes/realtime");
+const analyticsRoutes = require("./routes/analytics");
+const metricsRoutes = require("./routes/metrics");
+const candidatesRoutes = require("./routes/candidates");
+const voterRoutes = require("./routes/voter");
+const civicRoutes = require("./routes/civic");
 
 const app = express();
+
+// Performance & Observability
+app.use(compression());
+app.use(requestLogger);
 
 // Security Middleware (STRICT)
 app.use(helmet({
@@ -48,9 +61,12 @@ app.use('/api/insight', insightRoutes);
 app.use("/api/log", analyticsRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/realtime", realtimeRoutes);
-app.use("/api/civic-assets", civicRoutes);
 app.use("/api/voter-info", voterRoutes);
 app.use("/api/polling-booths", pollingRoutes);
+app.use("/api/metrics", metricsRoutes);
+app.use("/api/candidates", candidatesRoutes);
+app.use("/api/civic", civicRoutes);
+
 
 app.get("/health", (req, res) => {
   res.status(200).json({ 
@@ -65,8 +81,16 @@ app.get("/health", (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // SPA Handle: Route all non-api requests to index.html
-app.get('*', (req, res) => {
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// 404 Handler for API
+app.use('/api/*', (req, res) => {
+  res.status(404).json(formatResponse(null, false, `Endpoint ${req.originalUrl} not found`));
 });
 
 // Global Error Safety Layer

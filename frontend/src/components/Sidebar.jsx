@@ -10,6 +10,7 @@ const Sidebar = () => {
 
   const { t } = useI18n();
   const menuItems = [
+    { name: t('home'), icon: Home, path: '/' },
     { name: t('dashboard'), icon: Vote, path: '/dashboard' },
     { name: t('timeline'), icon: Calendar, path: '/timeline' },
     { name: t('eligibility'), icon: ShieldCheck, path: '/eligibility' },

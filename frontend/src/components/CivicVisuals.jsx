@@ -9,17 +9,17 @@ const CivicVisuals = () => {
   const visuals = [
     { 
       title: "Ashoka Lion Capital", 
-      image: "/images/ashoka_lions.png", 
+      image: "/assets/lion.png", 
       desc: "The State Emblem of India, representing power, courage, and confidence." 
     },
     { 
       title: "Parliament House", 
-      image: "/images/parliament.png", 
+      image: "/assets/parliament.png", 
       desc: "Sansad Bhavan - The supreme legislative body of the Republic of India." 
     },
     { 
       title: "Voter Ink Finger", 
-      image: "/images/voter_ink.png", 
+      image: "/assets/vote.png", 
       desc: "Indelible ink mark - the proud symbol of every citizen's active participation." 
     }
   ];
