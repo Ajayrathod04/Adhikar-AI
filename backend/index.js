@@ -11,6 +11,11 @@ const electionController = require('./controllers/electionController');
 const aiController = require('./controllers/aiController');
 const healthRoutes = require('./routes/health');
 const insightRoutes = require('./routes/insight');
+const analyticsRoutes = require("./routes/analytics");
+const newsRoutes = require("./routes/news");
+const realtimeRoutes = require("./routes/realtime");
+const civicRoutes = require("./routes/civic");
+const voterRoutes = require("./routes/voter");
 
 const app = express();
 
@@ -20,19 +25,28 @@ app.use(cors());
 app.use(express.json());
 
 // Rate Limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-});
-app.use('/api/', limiter);
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+}));
 
 // Routes
 app.get('/api/timeline', electionController.getTimeline);
 app.post('/api/eligibility', electionController.checkEligibility);
 app.get('/api/guide', electionController.getVotingGuide);
 app.post('/api/ai/chat', aiController.chatWithAI);
+app.post('/api/ai/ask', aiController.chatWithAI);
 app.use('/api/health', healthRoutes);
 app.use('/api/insight', insightRoutes);
+app.use("/api", analyticsRoutes);
+app.use("/api", newsRoutes);
+app.use("/api", realtimeRoutes);
+app.use("/api", civicRoutes);
+app.use("/api", voterRoutes);
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
 
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --coverage --detectOpenHandles"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@google/generative-ai": "^0.5.0",
