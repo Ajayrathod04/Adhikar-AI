@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const { logInfo, logError } = require('../utils/logger');
+
+let cache = null;
+let lastFetch = 0;
+const CACHE_DURATION = 60 * 1000;
 
 router.get('/news', (req, res) => {
   try {
+    const now = Date.now();
+    if (cache && (now - lastFetch < CACHE_DURATION)) {
+      logInfo('Returning cached news data');
+      return res.status(200).json({ success: true, data: cache, cached: true });
+    }
+
     const newsData = [
       {
         title: "Election Commission Announces Polling Dates",
@@ -18,12 +29,16 @@ router.get('/news', (req, res) => {
       }
     ];
 
+    cache = newsData;
+    lastFetch = now;
+    logInfo('Fetched fresh news data');
+
     return res.status(200).json({
       success: true,
       data: newsData
     });
   } catch (err) {
-    console.log(err);
+    logError('Error in news route', err);
     return res.status(200).json({
       success: true,
       fallback: true

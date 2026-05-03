@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
+const errorHandler = require('./middleware/errorHandler');
 
 dotenv.config();
 
@@ -27,7 +28,8 @@ app.use(express.json());
 // Rate Limiting
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100
+  max: 100,
+  message: "Too many requests, please try later"
 }));
 
 // Routes
@@ -57,10 +59,7 @@ app.get('*', (req, res) => {
 });
 
 // Global Error Safety Layer
-app.use((err, req, res, next) => {
-  console.error('[System Error Capture]:', err);
-  res.status(500).json({ status: 'error', message: 'Something went wrong, but the system is stable.' });
-});
+app.use(errorHandler);
 
 // Health Check
 app.get('/api/health', (req, res) => res.json({ status: 'OK' }));
