@@ -4,6 +4,10 @@ import { useRealtime } from '../hooks/useRealtime';
 import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { CheckCircle, Clock, MapPin, ArrowRight, Zap, Users } from 'lucide-react';
+import NewsSection from '../components/NewsSection';
+import VoterInfoSection from '../components/VoterInfoSection';
+import CivicAssetsSection from '../components/CivicAssetsSection';
+import CandidateInsightSection from '../components/CandidateInsightSection';
 
 const data = [
   { name: '2019', score: 67 },
@@ -134,6 +138,11 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      <NewsSection />
+      <VoterInfoSection />
+      <CivicAssetsSection />
+      <CandidateInsightSection />
     </div>
   );
 };

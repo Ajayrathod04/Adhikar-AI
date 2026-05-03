@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Calendar, NotebookTabs, ShieldCheck, MessageSquare, Info, Vote, Users } from 'lucide-react';
+import { Home, Calendar, NotebookTabs, ShieldCheck, MessageSquare, Info, Vote, Users, Newspaper, MapPin } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSafeNavigation } from '../utils/navigationFix';
 
@@ -15,6 +15,8 @@ const Sidebar = () => {
     { name: 'Voting Guide', icon: NotebookTabs, path: '/guide' },
     { name: 'AI Assistant', icon: MessageSquare, path: '/ai' },
     { name: 'Candidates', icon: Users, path: '/candidates' },
+    { name: 'Daily News', icon: Newspaper, path: '/news' },
+    { name: 'Polling Booth', icon: MapPin, path: '/booth' },
   ];
 
   return (

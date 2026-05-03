@@ -8,6 +8,8 @@ import VotingGuide from './pages/VotingGuide';
 import AIAssistant from './pages/AIAssistant';
 import Landing from './pages/Landing';
 import Candidates from './pages/Candidates';
+import DailyNews from './pages/DailyNews';
+import PollingBooth from './pages/PollingBooth';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="/guide" element={<VotingGuide />} />
           <Route path="/ai" element={<AIAssistant />} />
           <Route path="/candidates" element={<Candidates />} />
+          <Route path="/news" element={<DailyNews />} />
+          <Route path="/booth" element={<PollingBooth />} />
         </Routes>
       </Layout>
     </Router>
