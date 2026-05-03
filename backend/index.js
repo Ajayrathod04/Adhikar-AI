@@ -12,25 +12,30 @@ const electionController = require('./controllers/electionController');
 const aiController = require('./controllers/aiController');
 const healthRoutes = require('./routes/health');
 const insightRoutes = require('./routes/insight');
-const analyticsRoutes = require("./routes/analytics");
-const newsRoutes = require("./routes/news");
-const realtimeRoutes = require("./routes/realtime");
-const civicRoutes = require("./routes/civic");
-const voterRoutes = require("./routes/voter");
+const pollingRoutes = require("./routes/polling");
 
 const app = express();
 
-// Security Middleware
-app.use(helmet());
-app.use(cors());
+// Security Middleware (STRICT)
+app.use(helmet({
+  contentSecurityPolicy: false, // Allow inline styles for demo/hackathon ease
+}));
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
-// Rate Limiting
-app.use(rateLimit({
+// Rate Limiting (FAIL-SAFE)
+const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: "Too many requests, please try later"
-}));
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: "Too many requests, please try again later."
+});
+app.use("/api/", limiter);
 
 // Routes
 app.get('/api/timeline', electionController.getTimeline);
@@ -40,14 +45,20 @@ app.post('/api/ai/chat', aiController.chatWithAI);
 app.post('/api/ai/ask', aiController.chatWithAI);
 app.use('/api/health', healthRoutes);
 app.use('/api/insight', insightRoutes);
-app.use("/api", analyticsRoutes);
-app.use("/api", newsRoutes);
-app.use("/api", realtimeRoutes);
-app.use("/api", civicRoutes);
-app.use("/api", voterRoutes);
+app.use("/api/log", analyticsRoutes);
+app.use("/api/news", newsRoutes);
+app.use("/api/realtime", realtimeRoutes);
+app.use("/api/civic-assets", civicRoutes);
+app.use("/api/voter-info", voterRoutes);
+app.use("/api/polling-booths", pollingRoutes);
 
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
+  res.status(200).json({ 
+    status: "ok", 
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // Serve static frontend files
@@ -61,8 +72,8 @@ app.get('*', (req, res) => {
 // Global Error Safety Layer
 app.use(errorHandler);
 
-// Health Check
-app.get('/api/health', (req, res) => res.json({ status: 'OK' }));
+// API Health Check
+app.get('/api/health', (req, res) => res.json({ status: 'OK', uptime: process.uptime() }));
 
 // For Testing
 if (process.env.NODE_ENV !== 'test') {

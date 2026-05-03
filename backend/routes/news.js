@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { logInfo, logError } = require('../utils/logger');
+const { formatResponse } = require('../utils/responseFormatter');
 
 let cache = null;
 let lastFetch = 0;
@@ -11,7 +12,7 @@ router.get('/news', (req, res) => {
     const now = Date.now();
     if (cache && (now - lastFetch < CACHE_DURATION)) {
       logInfo('Returning cached news data');
-      return res.status(200).json({ success: true, data: cache, cached: true });
+      return res.json(formatResponse(cache, true));
     }
 
     const newsData = [
@@ -33,16 +34,10 @@ router.get('/news', (req, res) => {
     lastFetch = now;
     logInfo('Fetched fresh news data');
 
-    return res.status(200).json({
-      success: true,
-      data: newsData
-    });
+    return res.json(formatResponse(newsData));
   } catch (err) {
     logError('Error in news route', err);
-    return res.status(200).json({
-      success: true,
-      fallback: true
-    });
+    return res.status(500).json(formatResponse(null, false, err.message));
   }
 });
 

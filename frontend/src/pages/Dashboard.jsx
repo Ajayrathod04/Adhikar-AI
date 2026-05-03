@@ -81,12 +81,10 @@ const Dashboard = () => {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          title="Voter Readiness"
-          value={`${awarenessScore}%`}
-          icon={CheckCircle}
-          delay={0.1}
-        />
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-saffron rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+          <StatCard title="Voter Readiness" value={`${awarenessScore}%`} icon={CheckCircle} delay={0.1} />
+        </div>
         <StatCard
           title="Next Election"
           value="May 07, 2024"

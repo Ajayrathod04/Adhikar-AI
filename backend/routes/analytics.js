@@ -1,29 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../services/firestore');
+const { logInteraction } = require('../services/aiLogger');
+const { formatResponse } = require('../utils/responseFormatter');
 
-router.post('/log', async (req, res) => {
+/**
+ * POST /api/log
+ * Analytics endpoint for tracking AI interactions and user events
+ */
+router.post('/', async (req, res) => {
+  const { query, response, eventType } = req.body;
+  
   try {
-    const { query, response } = req.body;
-    
-    if (db) {
-      await db.collection('logs').add({
-        query: query || '',
-        response: response || '',
-        timestamp: new Date()
-      });
-    }
+    // Isolated logging attempt - never breaks response
+    logInteraction(query || eventType, response || 'EVENT_LOGGED')
+      .catch(err => console.error('[ANALYTICS] Background log failed:', err.message));
 
-    return res.status(200).json({
-      success: true,
-      data: { message: "Log saved successfully" }
-    });
+    res.json(formatResponse({ status: 'queued' }, true, "Event logged successfully"));
   } catch (err) {
-    console.log(err);
-    return res.status(200).json({
-      success: true,
-      fallback: true
-    });
+    // Fail-safe: Always return success for analytics to prevent frontend breakage
+    res.json(formatResponse({ status: 'ignored' }, true, "Analytics processed with fail-safe"));
   }
 });
 

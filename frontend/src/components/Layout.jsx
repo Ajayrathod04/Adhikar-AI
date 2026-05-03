@@ -6,9 +6,13 @@ import { useI18n, languages } from '../i18n/i18nContext';
 const Layout = ({ children }) => {
   const { locale, setLocale } = useI18n();
   return (
-    <div className="min-h-screen bg-background flex">
-      <Sidebar />
-      <main className="flex-1 ml-64 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Premium Tricolour Accent Line */}
+      <div className="h-1 w-full bg-gradient-tricolour sticky top-0 z-[100]" />
+      
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 ml-64 flex flex-col">
         {/* Navbar */}
         <header className="h-16 glass border-b border-white/5 px-8 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4 text-xs">
@@ -64,7 +68,8 @@ const Layout = ({ children }) => {
         <div className="p-8">
           {children}
         </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };

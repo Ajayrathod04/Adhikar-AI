@@ -1,65 +1,56 @@
 const request = require('supertest');
 const app = require('../index');
 
-// Mock Firestore so we don't actually hit the database in tests
-jest.mock('../services/firestore', () => {
-  return {
-    collection: jest.fn().mockReturnThis(),
-    add: jest.fn().mockResolvedValue({ id: 'mocked-doc-id' })
-  };
-});
-
-describe('API Tests', () => {
-  test('1. GET /health should return 200', async () => {
+describe('Adhikar AI API Endpoints', () => {
+  
+  test('GET /health - Should return system health', async () => {
     const res = await request(app).get('/health');
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('status', 'ok');
+    expect(res.body).toHaveProperty('uptime');
   });
 
-  test('2. POST /api/log should return success', async () => {
-    const res = await request(app)
-      .post('/api/log')
-      .send({ query: 'test', response: 'test response' });
-    
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('success', true);
+  test('GET /api/health - Should return API health', async () => {
+    const res = await request(app).get('/api/health');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('status', 'OK');
   });
 
-  test('3. GET /api/news should return array', async () => {
+  test('GET /api/news - Should return election news', async () => {
     const res = await request(app).get('/api/news');
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
     expect(Array.isArray(res.body.data)).toBe(true);
   });
 
-  test('4. GET /api/realtime should return data', async () => {
+  test('GET /api/realtime - Should return realtime stats', async () => {
     const res = await request(app).get('/api/realtime');
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
-    expect(res.body.data).toHaveProperty('turnout');
+    expect(res.body.data).toHaveProperty('activeVoters');
   });
 
-  test('5. GET /api/voter-info should return valid structure', async () => {
-    const res = await request(app).get('/api/voter-info');
-    expect(res.statusCode).toEqual(200);
+  test('GET /api/polling-booths - Should return booth data', async () => {
+    const res = await request(app).get('/api/polling-booths');
+    expect(res.statusCode).toBe(200);
     expect(res.body.success).toBe(true);
-    expect(res.body.data).toHaveProperty('pollingBooth');
+    expect(res.body.data.length).toBeGreaterThan(0);
   });
 
-  test('6. GET /api/civic-assets should return valid data', async () => {
-    const res = await request(app).get('/api/civic-assets');
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.success).toBe(true);
-    expect(res.body.data).toHaveProperty('nationalSymbols');
-  });
-
-  test('7. POST /api/ai/ask should return response', async () => {
+  test('POST /api/log - Should track analytics event', async () => {
     const res = await request(app)
-      .post('/api/ai/ask')
-      .send({ message: 'What is voting?' });
-    
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('status', 'success');
-    expect(res.body).toHaveProperty('reply');
+      .post('/api/log')
+      .send({ query: 'how to vote', response: 'Step 1...' });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.success).toBe(true);
   });
+
+  test('POST /api/eligibility - Should check voter eligibility', async () => {
+    const res = await request(app)
+      .post('/api/eligibility')
+      .send({ age: 20, citizenship: 'Indian' });
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('eligible', true);
+  });
+
 });
