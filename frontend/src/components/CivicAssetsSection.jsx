@@ -14,11 +14,11 @@ const CivicAssetsSection = () => {
       } catch (err) {
         setAssets({
           nationalSymbols: [
-            { name: "Ashoka Chakra", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Ashoka_Chakra.svg/1200px-Ashoka_Chakra.svg.png" },
-            { name: "Parliament", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Parliament_of_India.jpg/1200px-Parliament_of_India.jpg" }
+            { name: "Ashoka Lion Capital", image: "/images/ashoka_lions.png" },
+            { name: "Parliament", image: "/images/parliament.png" }
           ],
           electionAssets: [
-            { name: "Polling Booth", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Polling_booth.jpg/1200px-Polling_booth.jpg" }
+            { name: "Voter Ink Finger", image: "/images/voter_ink.png" }
           ]
         });
       }
