@@ -2,21 +2,22 @@ import React from 'react';
 import { Home, Calendar, NotebookTabs, ShieldCheck, MessageSquare, Info, Vote, Users, Newspaper, MapPin } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSafeNavigation } from '../utils/navigationFix';
+import { useI18n } from '../i18n/i18nContext';
 
 const Sidebar = () => {
   const location = useLocation();
   const { safeNavigate } = useSafeNavigation();
 
+  const { t } = useI18n();
   const menuItems = [
-    { name: 'Home', icon: Home, path: '/' },
-    { name: 'Dashboard', icon: Vote, path: '/dashboard' },
-    { name: 'Election Timeline', icon: Calendar, path: '/timeline' },
-    { name: 'Eligibility Checker', icon: ShieldCheck, path: '/eligibility' },
-    { name: 'Voting Guide', icon: NotebookTabs, path: '/guide' },
-    { name: 'AI Assistant', icon: MessageSquare, path: '/ai' },
-    { name: 'Candidates', icon: Users, path: '/candidates' },
-    { name: 'Daily News', icon: Newspaper, path: '/news' },
-    { name: 'Polling Booth', icon: MapPin, path: '/booth' },
+    { name: t('dashboard'), icon: Vote, path: '/dashboard' },
+    { name: t('timeline'), icon: Calendar, path: '/timeline' },
+    { name: t('eligibility'), icon: ShieldCheck, path: '/eligibility' },
+    { name: t('voting_guide'), icon: NotebookTabs, path: '/guide' },
+    { name: t('ai_assistant'), icon: MessageSquare, path: '/ai' },
+    { name: t('candidates'), icon: Users, path: '/candidates' },
+    { name: t('news'), icon: Newspaper, path: '/news' },
+    { name: t('booth'), icon: MapPin, path: '/booth' },
   ];
 
   return (

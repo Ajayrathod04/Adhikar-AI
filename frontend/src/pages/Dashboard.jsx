@@ -2,12 +2,31 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useRealtime } from '../hooks/useRealtime';
 import { Link } from 'react-router-dom';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { CheckCircle, Clock, MapPin, ArrowRight, Zap, Users } from 'lucide-react';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+} from 'recharts';
+import {
+  CheckCircle,
+  Clock,
+  MapPin,
+  ArrowRight,
+  Zap,
+  Users,
+} from 'lucide-react';
 import NewsSection from '../components/NewsSection';
 import VoterInfoSection from '../components/VoterInfoSection';
 import CivicAssetsSection from '../components/CivicAssetsSection';
 import CandidateInsightSection from '../components/CandidateInsightSection';
+import CivicVisuals from '../components/CivicVisuals';
+import { useI18n } from '../i18n/i18nContext';
 
 const data = [
   { name: '2019', score: 67 },
@@ -47,20 +66,45 @@ const StatCard = ({ title, value, icon: Icon, delay }) => (
 
 const Dashboard = () => {
   const { awarenessScore } = useRealtime();
-  
+  const { t } = useI18n();
+
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-3xl font-bold mb-2">Welcome Back!</h2>
-        <p className="text-zinc-500">Your election readiness dashboard. All systems are go.</p>
+        <h2 className="text-3xl font-bold mb-2 tracking-tight">
+          {t('welcome')}
+        </h2>
+        <p className="text-zinc-500">
+          AI-powered election intelligence at your fingertips.
+        </p>
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard title="Voter Readiness" value={`${awarenessScore}%`} icon={CheckCircle} delay={0.1} />
-        <StatCard title="Next Election" value="May 07, 2024" icon={Clock} delay={0.2} />
-        <StatCard title="Days Remaining" value="12 Days" icon={Zap} delay={0.3} />
-        <StatCard title="Polling Center" value="Dist 04, Mumbai" icon={MapPin} delay={0.4} />
+        <StatCard
+          title="Voter Readiness"
+          value={`${awarenessScore}%`}
+          icon={CheckCircle}
+          delay={0.1}
+        />
+        <StatCard
+          title="Next Election"
+          value="May 07, 2024"
+          icon={Clock}
+          delay={0.2}
+        />
+        <StatCard
+          title="Days Remaining"
+          value="12 Days"
+          icon={Zap}
+          delay={0.3}
+        />
+        <StatCard
+          title="Polling Center"
+          value="Dist 04, Mumbai"
+          icon={MapPin}
+          delay={0.4}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -68,25 +112,53 @@ const Dashboard = () => {
         <div className="lg:col-span-2 glass-card p-6 rounded-3xl">
           <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
             Awareness Score Trend
-            <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full">+12% from last year</span>
+            <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+              +12% from last year
+            </span>
           </h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data}>
                 <defs>
                   <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis dataKey="name" stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#52525b" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#121212', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="rgba(255,255,255,0.05)"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="name"
+                  stroke="#52525b"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#52525b"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#121212',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                  }}
                   itemStyle={{ color: '#8b5cf6' }}
                 />
-                <Area type="monotone" dataKey="score" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorScore)" strokeWidth={3} />
+                <Area
+                  type="monotone"
+                  dataKey="score"
+                  stroke="#8b5cf6"
+                  fillOpacity={1}
+                  fill="url(#colorScore)"
+                  strokeWidth={3}
+                />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -107,7 +179,10 @@ const Dashboard = () => {
                 className="w-full flex items-center justify-between p-4 rounded-2xl glass hover:bg-white/10 transition-all group"
               >
                 <span className="font-medium text-sm">{action.label}</span>
-                <ArrowRight size={16} className="text-zinc-500 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight
+                  size={16}
+                  className="text-zinc-500 group-hover:translate-x-1 transition-transform"
+                />
               </button>
             ))}
           </div>
@@ -119,7 +194,9 @@ const Dashboard = () => {
               </div>
               <div>
                 <h4 className="font-bold text-sm">Know Your Candidate</h4>
-                <p className="text-[10px] text-zinc-500">Unbiased stats & ratings</p>
+                <p className="text-[10px] text-zinc-500">
+                  Unbiased stats & ratings
+                </p>
               </div>
             </div>
             <Link to="/candidates">
@@ -131,7 +208,9 @@ const Dashboard = () => {
 
           <div className="p-5 rounded-2xl bg-gradient-neon flex flex-col items-center text-center">
             <h4 className="font-bold mb-1">Check My Readiness</h4>
-            <p className="text-[10px] text-white/80 mb-4">Complete your profile to get a 100% score</p>
+            <p className="text-[10px] text-white/80 mb-4">
+              Complete your profile to get a 100% score
+            </p>
             <button className="bg-white text-black text-xs font-bold px-6 py-2 rounded-full hover:shadow-xl transition-shadow">
               Start Evaluation
             </button>

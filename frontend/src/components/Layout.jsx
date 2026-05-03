@@ -1,8 +1,10 @@
 import React from 'react';
 import Sidebar from './Sidebar';
-import { User, Bell, ChevronDown } from 'lucide-react';
+import { User, Bell, ChevronDown, Globe } from 'lucide-react';
+import { useI18n, languages } from '../i18n/i18nContext';
 
 const Layout = ({ children }) => {
+  const { locale, setLocale } = useI18n();
   return (
     <div className="min-h-screen bg-background flex">
       <Sidebar />
@@ -14,6 +16,21 @@ const Layout = ({ children }) => {
               <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
               System Online
             </span>
+            <div className="h-4 w-[1px] bg-white/10 mx-2" />
+            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-2 py-1">
+              <Globe size={14} className="text-primary" />
+              <select 
+                value={locale} 
+                onChange={(e) => setLocale(e.target.value)}
+                className="bg-transparent border-none outline-none text-[10px] font-bold text-zinc-400 cursor-pointer uppercase"
+              >
+                {languages.map(lang => (
+                  <option key={lang.code} value={lang.code} className="bg-[#0f0a1a] text-white">
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className="flex items-center gap-6">
