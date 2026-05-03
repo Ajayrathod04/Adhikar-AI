@@ -16,13 +16,15 @@ const Layout = ({ children }) => {
               <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
               System Online
             </span>
-            <div className="h-4 w-[1px] bg-white/10 mx-2" />
-            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-2 py-1">
-              <Globe size={14} className="text-primary" />
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 hover:bg-white/10 transition-all group/lang">
+              <Globe size={16} className="text-primary group-hover/lang:scale-110 transition-transform" />
               <select 
                 value={locale} 
                 onChange={(e) => setLocale(e.target.value)}
-                className="bg-transparent border-none outline-none text-[10px] font-bold text-zinc-400 cursor-pointer uppercase"
+                className="bg-transparent border-none outline-none text-xs font-bold text-zinc-400 cursor-pointer uppercase appearance-none pr-1"
               >
                 {languages.map(lang => (
                   <option key={lang.code} value={lang.code} className="bg-[#0f0a1a] text-white">
@@ -30,10 +32,9 @@ const Layout = ({ children }) => {
                   </option>
                 ))}
               </select>
+              <ChevronDown size={12} className="text-zinc-600" />
             </div>
-          </div>
-
-          <div className="flex items-center gap-6">
+            <div className="h-6 w-[1px] bg-white/10" />
             <button className="p-2 text-zinc-400 hover:text-white transition-colors relative">
               <Bell size={20} />
               <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-background" />
